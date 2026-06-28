@@ -1,4 +1,4 @@
-# 
+# Exclusive Vegas Pro templates for Mac OS | Free Vegas Pro templates for PC Windows. Featuring motion-tracking and text-animation — optimized for maximum performance on every platform.
 
 
 
